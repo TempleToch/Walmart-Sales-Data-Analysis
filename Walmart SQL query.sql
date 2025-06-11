@@ -191,9 +191,22 @@ GROUP BY Product_line
 ORDER BY Avg_VAT DESC ;
 ------------------------------------------------------------------------------------------------------------
 --- Fetch each product line and add a column to those product line showing "Good", "Bad". Good if its greater than average sales --
-
-
-
+## USE salesdatawalmart;
+SELECT 
+    product_line,
+    SUM(total) AS total_revenue,
+    CASE 
+        WHEN SUM(total) > 
+        (SELECT AVG(revenue_sum)
+		FROM (SELECT SUM(total) AS revenue_sum
+		FROM sale
+		GROUP BY product_line
+        ) AS avg_revenue
+        ) THEN 'Good'
+        ELSE 'Bad'
+    END AS performance
+FROM sale
+GROUP BY product_line;
 
 -----------------------------------------------------------------------------------------------------------
 --- Which branch sold more products than average product sold? ---
