@@ -32,15 +32,15 @@ The dataset consists of 1,000 transactions from three Walmart branches located i
 | `product_line`           | Category of product sold                      | `VARCHAR(100)`   |
 | `unit_price`             | Price per unit                                | `DECIMAL(10, 2)` |
 | `quantity`               | Number of units sold                          | `INT`            |
-| `VAT`                    | Value Added Tax                               | `FLOAT(6, 4)`    |
+| `VAT`                    | Value Added Tax                               | `Decimal(6, 4)`  |
 | `total`                  | Total transaction amount                      | `DECIMAL(10, 2)` |
 | `date`                   | Date of the transaction                       | `DATE`           |
-| `time`                   | Time of the transaction                       | `TIMESTAMP`      |
+| `time`                   | Time of the transaction                       | `TIME`      |
 | `payment_method`         | Payment method used                           | `VARCHAR(30)`    |
 | `cogs`                   | Cost of goods sold                            | `DECIMAL(10, 2)` |
-| `gross_margin_percentage`| Gross margin percentage                       | `FLOAT(11, 9)`   |
+| `gross_margin_percentage`| Gross margin percentage                       | `Decimal(11, 9)` |
 | `gross_income`           | Gross income from the transaction             | `DECIMAL(10, 2)` |
-| `rating`                 | Customer rating                               | `FLOAT(2, 1)`    |
+| `rating`                 | Customer rating                               | `Decimal(2, 1)`  |
 
 ---
 
@@ -102,6 +102,9 @@ The dataset consists of 1,000 transactions from three Walmart branches located i
 ---
 
 ## 🧰 Tools Used
+
+
+
 - SQL
 - Python (Pandas, Matplotlib, Seaborn)
 - Excel
@@ -112,6 +115,94 @@ The dataset consists of 1,000 transactions from three Walmart branches located i
 
 ## 📌 Conclusion
 *Analysis and conclusions to be added after EDA completion.*
+
+# Revenue and Profit Calculations step-by-step in a simple and clear way
+
+What the terms mean:
+COGS (Cost of Goods Sold):
+This is how much it costs to buy or produce the products you sold.
+Formula: 
+       COGS= unitPrice × quantity
+
+VAT (Value Added Tax):
+This is a tax charged on the sale, set at 5% of the COGS.
+Formula:
+VAT = 5% × COGS
+
+Total (Gross Sales):
+This is what you bill the customer, which is the sum of the COGS plus the VAT.
+Formula:  total (gross sales)= COGS + VAT
+
+Gross Profit (Gross Income):
+This is the profit you make before deducting other expenses, and it's the VAT amount in this case (because COGS is your cost, and you add VAT on top).
+Formula: gross Profit =total (gross sales) − COGS =VAT
+
+Gross Margin:
+This shows how much profit you make as a percentage of your total revenue (gross sales).
+Formula:  Gross Margin=    total revenue / grossProfit  × 100%
+                          
+Example calculation (with your first row data):
+Unit Price = 45.79
+Quantity = 7
+​
+Step 1: Calculate COGS  = COGS= 45.79 × 7= 320.53
+
+Step 2: Calculate VAT = VAT=5%×320.53=16.0265
+
+Step 3: Calculate Total (Gross Sales) = 
+       total= COGS + VAT = 320.53 + 16.0265 = 336.5565
+
+Profit = Selling Price (before VAT) – Cost of Goods Sold (COGS)
+Example:
+Let’s assume:
+
+COGS = $45.79 × 7 = $320.53
+
+You add 20% profit margin to COGS:
+Selling Price (before VAT)=320.53+(20%×320.53) = 320.53+64.106 =384.636
+VAT (5%) is added on top of that: 
+
+VAT = 5% × 384.636 = 19.2318
+otal price customer pays = 384.636 + 19.2318 = $403.87
+
+Final Summary:
+You collected $403.87 from the customer
+
+You send $19.23 to the government as VAT
+
+Your own profit = $384.64 (your selling price) – $320.53 (your cost) = $64.11
+
+✅ Your real profit: $64.11
+ 
+ SQL QUERY FOR AUTOMATION 
+
+SELECT
+    unit_price,
+    quantity,
+    
+    -- COGS: Cost of Goods Sold
+    unit_price * quantity AS cogs,
+
+    -- Profit Margin: 20% of COGS
+    0.20 * (unit_price * quantity) AS profit_margin,
+
+    -- Selling Price before VAT (COGS + Profit)
+    (unit_price * quantity) + (0.20 * (unit_price * quantity)) AS selling_price,
+
+    -- VAT: 5% of Selling Price
+    0.05 * ((unit_price * quantity) + (0.20 * (unit_price * quantity))) AS vat,
+
+    -- Total billed to customer (Selling Price + VAT)
+    ((unit_price * quantity) + (0.20 * (unit_price * quantity))) +
+    (0.05 * ((unit_price * quantity) + (0.20 * (unit_price * quantity)))) AS total_billed,
+
+    -- Actual profit (Selling Price - COGS)
+    ((unit_price * quantity) + (0.20 * (unit_price * quantity))) - (unit_price * quantity) AS real_profit
+
+FROM sales;
+
+
+
 
 
 
