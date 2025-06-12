@@ -400,3 +400,58 @@ ORDER BY Avg_rating DESC;
 FROM sale
 GROUP BY day_name 
 ORDER BY day_name ;
+
+--- What is the most common payment method
+SELECT
+	payment,
+    count(*) AS cnt
+FROM sale
+GROUP by payment
+ORDER BY cnt;
+
+--- what is the total revenue by month ---
+
+ SELECT 
+       month_name AS Month,
+       SUM(Total) AS total_revenue
+ FROM sale
+ GROUP BY month_name 
+ ORDER BY total_revenue DESC;
+
+--- What month had the largest COGS ---
+
+SELECT 
+     Month_name AS Month, 
+	SUM(Cogs) AS Largest_Cogs
+FROM Sale
+GROUP BY Month_name
+ORDER BY Largest_Cogs DESC;
+
+--- What product line had the largest revenue? ---
+SELECT 
+      Product_line,
+      SUM(Total) AS Largest_revenue
+FROM sale
+GROUP BY Product_line
+ORDER BY Largest_revenue DESC;
+
+--- What product line had the largest VAT? ---
+SELECT 
+      Product_line,
+      ROUND(AVG(VAT),2) AS Largest_VAT
+FROM sale
+GROUP BY Product_line
+ORDER BY Largest_VAT DESC;
+
+--- What is the city with the largest revenue?
+
+SELECT 
+     Branch,
+     City,
+     SUM(Total) AS Total_revenue
+FROM Sale
+GROUP BY Branch, City
+ORDER BY Total_revenue DESC;
+
+
+
